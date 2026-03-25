@@ -1,18 +1,45 @@
-# Olist E-Commerce ETL Pipeline 📊
 
-This project implements a robust **ETL (Extract, Transform, Load)** pipeline to process and analyze the Olist E-commerce dataset from Brazil. The goal is to clean raw transactional data and prepare it for financial and operational insights.
+# Olist ETL Pipeline
 
-## 🚀 Project Structure
+A Python-based ETL pipeline designed to process the Olist E-commerce dataset. This project handles data extraction, cleaning, and preparation for downstream analysis.
 
-- `data/raw/`: Contains the original, unmodified CSV datasets.
-- `src/`: Core Python scripts for data processing.
-  - `extract.py`: Automated loading of multiple datasets using dynamic paths.
-  - `transform.py`: Data cleaning, datetime conversion, and duplicate removal logic.
-- `output/`: Storage for cleaned, analysis-ready datasets.
-- `logs/`: (Planned) Execution logs for monitoring pipeline health.
+## Project Structure
 
-## 🛠️ Tech Stack
+- `data/raw/`: Original CSV files (Source of truth).
+- `src/`: Python source code.
+  - `extract.py`: Logic for dynamic data loading using `pathlib`.
+  - `transform.py`: Data cleaning, type conversion, and deduplication.
+- `output/`: Cleaned datasets exported as CSVs.
+- `notebooks/`: Interactive data exploration and prototyping.
 
-- **Python 3.x**
-- **Pandas & Numpy**: For high-performance data manipulation.
-- **Pathlib**: For platform-independent (Windows/Linux) path management.
+## Key Features
+
+- **Dynamic Path Management**: Uses `pathlib` to ensure the project runs on any OS without hardcoded paths.
+- **Robust Extraction**: Centralized loading mechanism that maps multiple CSVs into a single Python dictionary for easy access.
+- **Data Cleaning**:
+  - Converts date-related strings into proper `datetime` objects.
+  - Filters records based on valid business statuses (delivered, shipped, etc.).
+  - Removes duplicate entries based on `order_id`.
+- **Validation**: Tracks null counts before and after transformation to monitor data integrity.
+
+## Usage
+
+1. Clone the repository.
+2. Install dependencies:
+
+   ```bash
+   pip install pandas numpy
+   ```
+
+
+3. Run the pipeline:
+   ```bash
+   python src/extract.py
+   ```
+
+
+## Requirements
+
+* Python 3.x
+* Pandas
+* Numpy
