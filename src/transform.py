@@ -123,7 +123,7 @@ def transform_all(datasets: dict) -> pd.DataFrame:
 
   df_final = merge_datasets(orders,items,customers,payments)
 
-  output_file = OUTPUT_PATH / "olist_clean_csv"
+  output_file = OUTPUT_PATH / "olist_clean.csv"
   df_final.to_csv(output_file, index=False)
   print(f"Saved: {output_file}")
   return df_final
