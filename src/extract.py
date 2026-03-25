@@ -28,7 +28,7 @@ def extract_all() -> dict[str, pd.DataFrame]:
   datasets = {
     "orders": load_csv("olist_orders_dataset.csv"),
     "items": load_csv("olist_order_items_dataset.csv"),
-    "costumers": load_csv("olist_customers_dataset.csv"),
+    "customers": load_csv("olist_customers_dataset.csv"),
     "payments": load_csv("olist_order_payments_dataset.csv"),
   }
   print(f"loaded {len(datasets)} successfully")
