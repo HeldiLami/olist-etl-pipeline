@@ -12,7 +12,7 @@ def clean_orders(df:pd.DataFrame)->pd.DataFrame:
   2.removes the rows without a proper status
   3.removes duplicates
   """
-
+  
   df = df.copy()
   
   date_columns = [
@@ -122,10 +122,6 @@ def transform_all(datasets: dict) -> pd.DataFrame:
   payments = datasets['payments'].copy()
 
   df_final = merge_datasets(orders,items,customers,payments)
-
-  output_file = OUTPUT_PATH / "olist_clean.csv"
-  df_final.to_csv(output_file, index=False)
-  print(f"Saved: {output_file}")
   return df_final
 
 if __name__ == "__main__":
