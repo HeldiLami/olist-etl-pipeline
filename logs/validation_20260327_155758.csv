@@ -1,0 +1,13 @@
+check,status,detail,time
+completeness_order_id,pass,0.00% null (max i lejuar: 0.0%),2026-03-27 15:57:58
+completeness_customer_id,pass,0.00% null (max i lejuar: 0.0%),2026-03-27 15:57:58
+completeness_order_purchase_timestamp,pass,0.00% null (max i lejuar: 0.0%),2026-03-27 15:57:58
+completeness_price,pass,0.00% null (max i lejuar: 0.0%),2026-03-27 15:57:58
+completeness_order_status,pass,0.00% null (max i lejuar: 0.5%),2026-03-27 15:57:58
+completeness_delivery_days,pass,1.71% null (max i lejuar: 15.0%),2026-03-27 15:57:58
+consistency_prices,pass,0 çmime negative,2026-03-27 15:57:58
+consistency_delivery_dates,pass,0 delivery before purchase — impossible,2026-03-27 15:57:58
+consistency_unique_orders,pass,"Max 21 products per order, average: 1.1",2026-03-27 15:57:58
+distribution_price_outliers,pass,"7.5% outliers (Q1=39.90, Q3=134.90, IQR=95.00)",2026-03-27 15:57:58
+distribution_delivery_days,pass,"mean: 12.0 days, median:10.0 days, std: 9.5 days",2026-03-27 15:57:58
+distribution_revenue,pass,"min revenue: $6.08, max revenue: $6929.31, mean revenue: $140.51",2026-03-27 15:57:58

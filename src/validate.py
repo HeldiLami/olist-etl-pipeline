@@ -76,16 +76,36 @@ def check_consistency(df: pd.DataFrame) -> list[dict]:
       f"{impossible_delivery:,} delivery before purchase — impossible"
   ))
     
-  duplicate_orders = df.duplicated(subset=['order_id']).sum()
+  # duplicate_orders = df.duplicated(subset=['order_id']).sum()
+  # results.append(_make_result(
+  #   "consistency_unique_orders",
+  #   duplicate_orders == 0,
+  #   f"{duplicate_orders:,} order_id të duplifikuara"
+  # ))
+
+  orders_per_id = df.groupby("order_id").size()
+  max_items = orders_per_id.max()
+  mean_items = orders_per_id.mean()
   results.append(_make_result(
-    "consistency_uniqe_orders",
-    duplicate_orders == 0,
-    f"{duplicate_orders:,} order_id të duplifikuara"
-  ))
+    "consistency_unique_orders",
+    max_items <= 21,
+    f"Max {max_items} products per order, average: {mean_items:.1f}"
+))
+
+
+  #! the code above:
+  #! after i ran it, itdoesnt work as it was inteded to because it checks
+  #! if there are not any duplicate order_id, meanwhile the logical connection of the order_id and payments
+  #! is (one to many). That means that many items will have the same order id but that doesnt meean
+  #! that there are any duplicate order_id
+
+  #* how we can fix it ->
+
+
 
   if "total_payments" in df.columns:
     discrepancy = np.abs(
-      df["total_payment"] - df["tota_revenue"]
+      df["total_payment"] - df["total_revenue"]
     )
     large_discrepancy = (discrepancy>1).mean() * 100
     results.append(_make_result(
@@ -121,7 +141,7 @@ def check_distribution(df: pd.DataFrame)-> list[dict]:
   ))
 
 #average days to deliver
-  if "deliver_days" in df.columns: 
+  if "delivery_days" in df.columns: 
     delivery = df['delivery_days'].dropna().values
     mean_days = np.mean(delivery)
     median_days = np.median(delivery)
