@@ -68,9 +68,7 @@ After processing **111,715 records** across **99,441 orders**:
 - 53% of products fall in the mid tier ($50–$200)
 - Only 3% reach luxury pricing (>$500)
 
-`![Price Distribution](images/price_distribution.png)`
-
----
+![Price Distribution](images/price_distribution.png)
 
 ## Data Quality Framework
 
