@@ -1,3 +1,4 @@
+
 # Olist E-Commerce ETL Pipeline
 
 A production-style ETL pipeline that processes 100k+ Brazilian e-commerce
@@ -67,7 +68,7 @@ After processing **111,715 records** across **99,441 orders**:
 - 53% of products fall in the mid tier ($50–$200)
 - Only 3% reach luxury pricing (>$500)
 
-![Price Distribution](images/price_distribution.png)
+`![Price Distribution](images/price_distribution.png)`
 
 ---
 
@@ -104,14 +105,15 @@ trail across executions.
 olist-etl-pipeline/
 ├── data/raw/              ← source CSV files (not tracked in git)
 ├── notebooks/
-│   └── exploration.ipynb  ← EDA and pre-transform experiments
+│   └── exploration.ipynb  ← EDA and pre-transform experiments  
 ├── src/
 │   ├── extract.py
 │   ├── transform.py
 │   ├── validate.py
 │   └── load.py
-├── output/                ← cleaned data and summary reports
-├── logs/                  ← validation reports and run history
+├── images/                ← screenshots and charts for README (tracked in git)
+├── output/                ← cleaned data and summary reports (ignored)
+├── logs/                  ← validation reports and run history (ignored)
 ├── main.py
 ├── requirements.txt
 └── README.md
