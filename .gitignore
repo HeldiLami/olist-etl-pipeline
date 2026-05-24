@@ -1,3 +1,19 @@
+# DuckDB
+*.duckdb
+*.duckdb.wal
+
+# dbt
+dbt_olist/target/
+dbt_olist/dbt_packages/
+dbt_olist/logs/
+
+# Parquet files (të mëdha, gjenerohen nga ingest.py)
+lakehouse/warehouse/*.parquet
+lakehouse/catalog/
+
+
+
+
 venv/
 __pycache__/
 data/raw/
