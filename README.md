@@ -1,13 +1,12 @@
-
 # Olist E-Commerce ETL Pipeline
 
-A production-style ETL pipeline that processes 100k+ Brazilian e-commerce
-records through automated extraction, cleaning, validation, and reporting
-stages — built with Python, Pandas, and NumPy.
+A production-style data platform that processes 100k+ Brazilian e-commerce records through a modern lakehouse architecture — built with Python, DuckDB, Apache Parquet, and dbt.
 
 ---
 
 ## Architecture
+
+### Layer 1 — ETL Pipeline (Python)
 
 ```
 data/raw/          →    extract.py    →    transform.py
@@ -17,12 +16,21 @@ logs/pipeline_runs.csv  ←   load.py   ←   validate.py
 output/olist_clean.csv      (export)       (12 quality checks)
 ```
 
-**Each module has a single responsibility:**
+### Layer 2 — Lakehouse (DuckDB + Parquet + dbt)
 
-- `extract.py` — reads raw CSVs, fails fast if files are missing
-- `transform.py` — applies cleaning rules and business logic
-- `validate.py` — runs 3-layer data quality framework
-- `load.py` — exports results and maintains pipeline run history
+```
+data/raw/.csv
+↓  [ingest.py — converts to Parquet]
+lakehouse/warehouse/.parquet
+↓  [DuckDB — persistent database]
+lakehouse/catalog/olist.duckdb
+↓  [dbt models]
+staging/ → core/ → marts/
+```
+
+### dbt Lineage Graph
+
+![Lineage Graph](images/lineage_graph.png)
 
 ---
 
@@ -45,8 +53,20 @@ pip install -r requirements.txt
 # Download from: kaggle.com/datasets/olistbr/brazilian-ecommerce
 # Place all CSV files in data/raw/
 
-# 5. Run the full pipeline
-python main.py
+# 5. Run ETL pipeline
+python src/main.py
+
+# 6. Run lakehouse ingestion
+python lakehouse/ingest.py
+
+# 7. Run dbt models
+cd dbt_olist
+dbt run
+dbt test
+
+# 8. View documentation
+dbt docs generate
+dbt docs serve
 ```
 
 ---
@@ -63,56 +83,53 @@ After processing **111,715 records** across **99,441 orders**:
 | Data quality score      | 10/11 checks passed |
 | Price outliers detected | 7.5% of products    |
 
-**Price distribution:**
-
-- 53% of products fall in the mid tier ($50–$200)
-- Only 3% reach luxury pricing (>$500)
-
 ![Price Distribution](images/price_distribution.png)
 
-## Data Quality Framework
+---
 
-Validation runs automatically after every transform and covers three layers:
+## Data Quality
 
-- **Completeness** — critical columns checked for null thresholds
-- **Consistency** — business rules enforced (no negative prices,
-  no delivery before purchase date)
-- **Distribution** — statistical outlier detection using IQR method
-
-Every run is logged to `logs/pipeline_runs.csv` with timestamp,
-duration, rows processed, and quality score — providing full audit
-trail across executions.
+- **7 automated dbt tests** — `not_null` and `unique` across all staging models
+- **3-layer validation framework** — completeness, consistency, distribution
+- Every pipeline run logged to `logs/pipeline_runs.csv` with full audit trail
 
 ---
 
 ## Tech Stack
 
-| Tool        | Purpose                                            |
-| ----------- | -------------------------------------------------- |
-| Python 3.11 | Core language                                      |
-| Pandas      | Data manipulation and ETL logic                    |
-| NumPy       | Statistical computations and vectorized operations |
-| Pathlib     | Cross-platform file handling                       |
-| Jupyter     | Exploratory data analysis                          |
+| Tool           | Purpose                                        |
+| -------------- | ---------------------------------------------- |
+| Python 3.11    | Core language                                  |
+| Pandas         | ETL logic and data manipulation                |
+| DuckDB         | Analytical query engine (columnar, serverless) |
+| Apache Parquet | Columnar storage format                        |
+| dbt            | SQL transformation layer with tests and docs   |
+| NumPy          | Statistical computations                       |
 
 ---
 
 ## Project Structure
 
-```
 olist-etl-pipeline/
-├── data/raw/              ← source CSV files (not tracked in git)
-├── notebooks/
-│   └── exploration.ipynb  ← EDA and pre-transform experiments  
+├── data/raw/ ← source CSV files (not tracked)
+├── lakehouse/
+│ ├── warehouse/ ← Parquet files (not tracked)
+│ ├── catalog/ ← DuckDB database (not tracked)
+│ ├── ingest.py ← CSV → Parquet conversion
+│ └── query_test.py ← DuckDB query examples
+├── dbt_olist/
+│ ├── models/
+│ │ ├── staging/ ← stg_orders, stg_customers, stg_order_items
+│ │ ├── core/ ← fct_orders
+│ │ └── marts/ ← mart_revenue_by_state
+│ └── dbt_project.yml
 ├── src/
-│   ├── extract.py
-│   ├── transform.py
-│   ├── validate.py
-│   └── load.py
-├── images/                ← screenshots and charts for README (tracked in git)
-├── output/                ← cleaned data and summary reports (ignored)
-├── logs/                  ← validation reports and run history (ignored)
-├── main.py
+│ ├── extract.py
+│ ├── transform.py
+│ ├── validate.py
+│ └── load.py
+├── images/
+│ ├── lineage_graph.png
+│ └── price_distribution.png
 ├── requirements.txt
 └── README.md
-```
