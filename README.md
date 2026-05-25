@@ -30,7 +30,7 @@ staging/ → core/ → marts/
 
 ### dbt Lineage Graph
 
-![Lineage Graph](images/lineage_graph.png)
+![Lineage Graph](images/lineage_graph_dbt.png)
 
 ---
 
