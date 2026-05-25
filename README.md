@@ -110,6 +110,7 @@ After processing **111,715 records** across **99,441 orders**:
 
 ## Project Structure
 
+```
 olist-etl-pipeline/
 ├── data/raw/ ← source CSV files (not tracked)
 ├── lakehouse/
@@ -133,3 +134,4 @@ olist-etl-pipeline/
 │ └── price_distribution.png
 ├── requirements.txt
 └── README.md
+```
